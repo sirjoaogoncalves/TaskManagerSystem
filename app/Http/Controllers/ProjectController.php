@@ -7,10 +7,26 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 
+
+/**
+ * Classe Responsavel por metodos referentes a projetos
+ * Classe com metodos index, create, store, show, edit, update e destroy
+ * Realiza a listagem dos projetos, filtrando por nome e status
+ * Paginacao dos projetos
+ * Criacao, atualizacao e remocao dos projetos
+*/
 class ProjectController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     *     Inicialização: O método começa inicializando um objeto construtor de consulta para o modelo Project, que permite recuperar dados dos projetos do banco de dados.
+
+    Filtragem: Ele verifica se há parâmetros de consulta, como name e status, na requisição para filtrar os projetos conforme necessário. Se presentes, adiciona condições à consulta para filtrar os projetos por nome (usando o operador LIKE) e status.
+
+    Paginação: Após a filtragem, o método faz paginacao dos resultados, exibindo 10 projetos por página e mostrando um link adicional em cada lado do paginador.
+
+    Renderização da Visualização: Por fim, retorna uma visualização, usando o framework Inertia.js, passando dados como os projetos paginados e os parâmetros de consulta da requisição para a visualização para renderização.
+
+Resumindo, o método lida com a listagem de projetos, aplicando filtros se especificado, paginando os resultados e renderizando-os em uma visualização para exibição.
      */
     public function index()
     {
