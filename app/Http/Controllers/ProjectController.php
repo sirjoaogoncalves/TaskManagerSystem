@@ -32,6 +32,11 @@ Resumindo, o método lida com a listagem de projetos, aplicando filtros se espec
     {
         $query = Project::query();
 
+        $sortField = request('sort_field', 'created_at');
+        $sortDirection = request('sort_direction', 'desc');
+
+
+
         if (request('name')) {
             $query->where('name', 'like', '%' . request('name') . '%');
         }
@@ -39,7 +44,7 @@ Resumindo, o método lida com a listagem de projetos, aplicando filtros se espec
             $query->where('status', request('status'));
         }
 
-        $projects = $query->paginate(10)->onEachSide(1);
+        $projects = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
 
 
         return inertia('Project/Index', [

@@ -2,11 +2,11 @@ import Pagination from "@/Components/Pagination";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { PROJECT_STATUS_COLOR_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constants.jsx";
+import { TASK_STATUS_COLOR_MAP, TASK_STATUS_TEXT_MAP } from "@/constants.jsx";
 import { Head, Link, router } from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
 
-export default function Index({ auth, projects, queryParams = null }) {
+export default function Index({ auth, tasks, queryParams = null }) {
 
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
@@ -16,7 +16,7 @@ export default function Index({ auth, projects, queryParams = null }) {
             delete queryParams[name];
         }
 
-        router.get(route('project.index'), queryParams, { replace: true, preserveState: true });
+        router.get(route('task.index'), queryParams, { replace: true, preserveState: true });
     }
 
     const onKeyPress = (name, e) => {
@@ -35,17 +35,17 @@ export default function Index({ auth, projects, queryParams = null }) {
             queryParams.sort_field = name;
             queryParams.sort_direction = 'asc';
         }
-        router.get(route('project.index'), queryParams, { replace: true, preserveState: true });
+        router.get(route('task.index'), queryParams, { replace: true, preserveState: true });
     }
 
 
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Projects</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Tasks</h2>}
         >
 
-            <Head title="Projects" />
+            <Head title="Tasks" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -109,7 +109,7 @@ export default function Index({ auth, projects, queryParams = null }) {
                                             <th scope="col" className="px-6 py-3"></th>
                                             <th scope="col" className="px-6 py-3"></th>
                                             <th scope="col" className="px-6 py-3">
-                                                <TextInput className="w-full" placeholder="Search Project..." defaultValue={queryParams?.name}
+                                                <TextInput className="w-full" placeholder="Search Task..." defaultValue={queryParams?.name}
                                                     onBlur={e => searchFieldChanged('name', e.target.value)}
                                                     onKeyPress={e => onKeyPress('name', e)} />
                                             </th>
@@ -130,41 +130,41 @@ export default function Index({ auth, projects, queryParams = null }) {
                                     </thead>
 
                                     <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                        {projects.data.map((project) => (
-                                            <tr key={project.id} className="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        {tasks.data.map((task) => (
+                                            <tr key={task.id} className="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                                 <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                                    {project.id}
+                                                    {task.id}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <img src={project.img_path} style={{ width: 100, height: 100 }} alt={project.name} />
+                                                    <img src={task.img_path} style={{ width: 100, height: 100 }} alt={task.name} />
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    {project.name}
+                                                    {task.name}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <span className={"px-2 py-1 rounded text-white " + PROJECT_STATUS_COLOR_MAP[project.status]}>
-                                                        {PROJECT_STATUS_TEXT_MAP[project.status]}
+                                                    <span className={"px-2 py-1 rounded text-white " + TASK_STATUS_COLOR_MAP[task.status]}>
+                                                        {TASK_STATUS_TEXT_MAP[task.status]}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    {project.created_at}
+                                                    {task.created_at}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    {project.due_date}
+                                                    {task.due_date}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    {project.created_by.name}
+                                                    {task.created_by.name}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <Link href={route('project.edit', project.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">Edit</Link>
-                                                    <Link href={"route(project.destroy', project.id)"} className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1">Delete</Link>
+                                                    <Link href={route('task.edit', task.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">Edit</Link>
+                                                    <Link href={"route(task.destroy', task.id)"} className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1">Delete</Link>
                                                 </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
-                            <Pagination links={projects.meta.links} />
+                            <Pagination links={tasks.meta.links} />
                         </div>
                     </div>
                 </div>
