@@ -8,7 +8,6 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Project;
 
-
 /**
  * Classe Responsavel por metodos referentes a projetos
  * Classe com metodos index, create, store, show, edit, update e destroy
@@ -51,27 +50,40 @@ Resumindo, o método lida com a listagem de projetos, aplicando filtros se espec
         return inertia('Project/Index', [
             'projects' => ProjectResource::collection($projects),
             'queryParams' => request()->query() ?: null,
+            'success' => session('success')
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Este método exibe o formulário para criar um novo projeto. Retorna uma visualização para criar um novo projeto.
      */
     public function create()
     {
-        //
+       return inertia('Project/Create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Este método armazena um novo projeto na base de dados. Valida os dados recebidos, armazena a imagem (se presente) e cria o projeto na base de dados. Em seguida, redireciona para a listagem de projetos com uma mensagem de sucesso.
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $data = $request->validated();
+        /** @var $image \Illuminate\Http\uploadedFile */
+        $image = $data['image'] ?? null;
+        $data['created_by'] = auth()->id();
+        $data['updated_by'] = auth()->id();
+
+        if ($image) {
+            $data['img_path'] = $image->store('images', 'public');
+        }
+
+        Project::create($data);
+
+        return to_route('project.index')->with('success', 'Project created successfully');
     }
 
     /**
-     * Display the specified resource.
+     * Este método exibe os detalhes de um projeto específico, incluindo suas tarefas associadas. Filtra as tarefas com base nos parametros de consulta, realiza a paginação dos resultados e retorna uma visualização dos detalhes do projeto.
      */
     public function show(Project $project)
     {
@@ -99,26 +111,41 @@ Resumindo, o método lida com a listagem de projetos, aplicando filtros se espec
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Este método exibe o formulário para editar um projeto existente. Retorna uma visualização para editar o projeto especificado.
      */
     public function edit(Project $project)
     {
-        //
+        return inertia('Project/Edit', [
+            'project' => new ProjectResource($project),
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Este método atualiza um projeto existente na base de dados. Valida os dados recebidos, atualiza a imagem (se presente) e atualiza os detalhes do projeto na base de dados. Em seguida, redireciona para a listagem de projetos com uma mensagem de sucesso.
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $data = $request->validated();
+        /** @var $image \Illuminate\Http\uploadedFile */
+        $image = $data['image'] ?? null;
+        $data['updated_by'] = auth()->id();
+
+        if ($image) {
+            $data['img_path'] = $image->store('images', 'public');
+        }
+
+        $project->update($data);
+
+        return to_route('project.index')->with('success', 'Project \'' . $project->name . '\' updated successfully');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Este método exclui um projeto da base de dados. Remove o projeto especificado da base de dados e redireciona para a listagem de projetos com uma mensagem de sucesso.
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return to_route('project.index')->with('success', 'Project \'' . $project->name . '\' deleted successfully');
     }
 }

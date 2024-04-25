@@ -23,10 +23,11 @@ class DatabaseSeeder extends Seeder
 
          ]);
 
-        Project::factory()
-            ->count(20)
-            ->hasTasks(10)
-            ->create();
+        User::factory()->create([
+            'name' => 'Maria',
+            'email' => 'maria@example.com',
+            'password' => bcrypt('caldelas123'),
+        ]);
 
     }
 }
