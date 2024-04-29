@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
 
-export default function Index({ auth, users, queryParams = null, success }) {
+export default function Index({ auth, users, queryParams = null, success, error }) {
 
     queryParams = queryParams || {};
 
@@ -41,7 +41,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
     // Esta função é invocada para excluir um user. Exibe um prompt de confirmação e, se confirmado, realiza uma requisição DELETE para excluir o user.
     const deleteUser = (user) => {
         if (!window.confirm('Are you sure you want to delete this user?')) return;
-        router.delete(route('user.destroy', project.id));
+        router.delete(route('user.destroy', user.id));
     }
 
     return (
@@ -61,9 +61,15 @@ export default function Index({ auth, users, queryParams = null, success }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        {success && (<div className="bg-emerald-500 text-white p-4 mb-4 text-center overflow-hidden shadow-sm sm:rounded-lg">
-                            {success}
-                        </div>
+                       {success && (
+                            <div className="bg-emerald-500 text-white p-4 mb-4 text-center overflow-hidden shadow-sm sm:rounded-lg">
+                                {success}
+                            </div>
+                        )}
+                        {error && (
+                            <div className="bg-red-500 text-white p-4 mb-4 text-center overflow-hidden shadow-sm sm:rounded-lg">
+                                {error}
+                            </div>
                         )}
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-x-auto">
@@ -107,7 +113,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
                                             </TableHeading>
 
 
-
+                                            <th className="px-3 py-3 text-right"></th>
                                             <th className="px-3 py-3 text-right">Actions</th>
                                         </tr>
                                     </thead>

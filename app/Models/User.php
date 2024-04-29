@@ -20,6 +20,7 @@ class User extends Authenticatable {
         'name',
         'email',
         'password',
+        'email_verified_at',
     ];
 
     /**
@@ -41,4 +42,10 @@ class User extends Authenticatable {
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function hasProjects() {
+        return $this->hasMany(Project::class, 'created_by')->orWhere('updated_by', $this->id)->exists();
+    }
+
+
 }
