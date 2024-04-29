@@ -21,7 +21,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
         router.get(route('project.index'), queryParams, { replace: true, preserveState: true });
     }
 
-    // Esta função é invocada quando uma tecla é pressionada no campo de pesquisa. Se a tecla pressionada não for 'Enter', chama a função searchFieldChanged para alterar o campo de pesquisa.
+// Esta função é invocada quando uma tecla é pressionada no campo de pesquisa. Se a tecla pressionada não for 'Enter', chama a função searchFieldChanged para alterar o campo de pesquisa.
     const onKeyPress = (name, e) => {
         if (e.key === 'Enter') return;
         searchFieldChanged(name, e.target.value);

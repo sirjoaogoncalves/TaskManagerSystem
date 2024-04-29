@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\TasksPerProject;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Project;
+use ArielMejiaDev\LarapexCharts\PieChart;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Classe Responsavel por metodos referentes a projetos
@@ -151,5 +154,10 @@ Resumindo, o método lida com a listagem de projetos, aplicando filtros se espec
             $project->delete();
             return to_route('project.index')->with('success', 'Project \'' . $project->name . '\' deleted successfully');
         }
+    }
+
+    public function getTasksCountPerProject(TasksPerProject $chart)
+    {
+        return inertia('/dashboard', ['chart' => $chart->build()]);
     }
 }
