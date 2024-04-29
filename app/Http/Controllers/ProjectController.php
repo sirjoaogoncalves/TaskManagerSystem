@@ -144,8 +144,12 @@ Resumindo, o método lida com a listagem de projetos, aplicando filtros se espec
      */
     public function destroy(Project $project)
     {
-        $project->delete();
-
-        return to_route('project.index')->with('success', 'Project \'' . $project->name . '\' deleted successfully');
+       if ($project->hasTasks()) {
+            return to_route('project.index')->with('error', 'Project \'' . $project->name . '\' cannot be deleted because it has tasks');
+        }
+        else {
+            $project->delete();
+            return to_route('project.index')->with('success', 'Project \'' . $project->name . '\' deleted successfully');
+        }
     }
 }

@@ -73,7 +73,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-         return inertia('User/Edit', [
+        return inertia('User/Edit', [
             'user' => new UserCrudResource($user),
         ]);
     }
@@ -94,7 +94,7 @@ class UserController extends Controller
 
         return to_route('user.index')
             ->with('success', "User \"$user->name\" was updated");
-     }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -106,8 +106,7 @@ class UserController extends Controller
         if ($user->hasProjects()) {
             return to_route('user.index')
                 ->with('error', "User \"$user->name\" can't be deleted because it has projects");
-        }
-        else {
+        } else {
             $user->delete();
             return to_route('user.index')
                 ->with('success', "User \"$user->name\" was deleted");

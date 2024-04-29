@@ -32,4 +32,9 @@ class Project extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+
+    public function hasTasks()
+    {
+        return $this->hasMany(Task::class, 'project_id')->exists();
+    }
 }
