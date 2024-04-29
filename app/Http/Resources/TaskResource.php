@@ -10,6 +10,7 @@ use App\Http\Resources\ProjectResource;
 
 class TaskResource extends JsonResource
 {
+    public static $wrap = false;
     /**
      * Transform the resource into an array.
      *

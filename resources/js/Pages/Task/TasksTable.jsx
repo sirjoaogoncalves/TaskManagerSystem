@@ -5,7 +5,7 @@ import TableHeading from "@/Components/TableHeading";
 import { Link, router } from "@inertiajs/react";
 import { TASK_STATUS_COLOR_MAP, TASK_STATUS_TEXT_MAP } from "@/constants.jsx";
 
-export default function TasksTable({ tasks, queryParams = null, hideProjectColumn = false }) {
+export default function TasksTable({ tasks, queryParams = null, hideProjectColumn = false , success}) {
 
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
@@ -37,9 +37,18 @@ export default function TasksTable({ tasks, queryParams = null, hideProjectColum
         router.get(route('task.index'), queryParams, { replace: true, preserveState: true });
     }
 
+    const deleteTask = (id) => {
+        if (confirm('Are you sure you want to delete this task?')) {
+            router.delete(route('task.destroy', id), { preserveScroll: true, preserveState: true });
+        }
+    }
+
 
     return (
         <>
+        {success && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            {success}
+        </div>}
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -133,7 +142,7 @@ export default function TasksTable({ tasks, queryParams = null, hideProjectColum
                                     {task.project.name}
                                 </td>}
                                 <td className="px-6 py-4">
-                                    {task.name}
+                                    <Link href={route('task.show', task.id)} className="font-medium text-white hover:underline">{task.name}</Link>
                                 </td>
                                 <td className="px-6 py-4">
                                     <span className={"px-2 py-1 rounded text-white " + TASK_STATUS_COLOR_MAP[task.status]}>
@@ -149,9 +158,9 @@ export default function TasksTable({ tasks, queryParams = null, hideProjectColum
                                 <td className="px-6 py-4">
                                     {task.created_by.name}
                                 </td>
-                                <td className="px-6 py-4">
+                                <td className="px-6 py-4 text-nowrap ">
                                     <Link href={route('task.edit', task.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">Edit</Link>
-                                    <Link href={"route(task.destroy', task.id)"} className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1">Delete</Link>
+                                    <button onClick={(e) => deleteTask(task)} className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1">Delete</button>
                                 </td>
                             </tr>
                         ))}

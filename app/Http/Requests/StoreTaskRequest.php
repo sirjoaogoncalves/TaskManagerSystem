@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -22,13 +23,14 @@ class StoreTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["required", "string", "max:255"],
-            "email" => ["required", "string", "email", "unique:users,email"],
-            "password" => [
-                "required",
-                'confirmed',
-                Password::min(8)->letters()->symbols(),
-            ],
+            'name' => ['required', 'string', 'max:255'],
+            'image' => ['nullable', 'image'],
+            'description' => ['required', 'string', 'max:255'],
+            'due_date' => ['required', 'date'],
+            'status' => ['required', Rule::in(['pending', 'in_progress', 'completed'])],
+            'priority' => ['required', Rule::in(['low', 'medium', 'high'])],
+            'project_id' => ['required', 'exists:projects,id'],
+            'assigned_user_id' => ['nullable', 'exists:users,id'],
         ];
     }
 }

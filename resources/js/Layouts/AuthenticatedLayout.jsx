@@ -8,19 +8,19 @@ import { Link } from '@inertiajs/react';
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
-      const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(false);
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-  }, [isDarkMode]);
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.add('dark');
+        } else {
+            document.body.classList.remove('dark');
+        }
+    }, [isDarkMode]);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(prevMode => !prevMode);
-  };
+    const toggleDarkMode = () => {
+        setIsDarkMode(prevMode => !prevMode);
+    };
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -35,8 +35,11 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('project.index')} active={route().current('project.index')}>
                                     Projects
                                 </NavLink>
+                                <NavLink href={route('task.myTasks')} active={route().current('task.myTasks')}>
+                                    My Tasks
+                                </NavLink>
                                 <NavLink href={route('task.index')} active={route().current('task.index')}>
-                                    Tasks
+                                    All Tasks
                                 </NavLink>
                                 <NavLink href={route('user.index')} active={route().current('user.index')}>
                                     Users
