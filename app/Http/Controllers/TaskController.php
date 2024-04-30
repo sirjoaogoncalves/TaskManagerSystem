@@ -11,12 +11,14 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
 
-
+/**
+*A classe TaskController é responsável por gerir as operações relacionadas às tarefas dentro da aplicação. Ela atua como um intermediário entre as requisições HTTP e o modelo Task, permitindo listar, criar, exibir, editar e excluir tarefas.
+*/
 
 class TaskController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista as tarefas, aplicando filtros opcionais de nome e status, e paginando os resultados para exibição. Retorna uma visualização com as tarefas paginadas, incluindo os parâmetros de consulta e mensagens de sucesso ou erro.
      */
     public function index()
     {
@@ -47,7 +49,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     *     Exibe o formulário para criar uma tarefa, fornecendo também a lista de projetos e utilizadores disponíveis.
      */
     public function create()
     {
@@ -61,7 +63,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     *     Armazena uma nova tarefa na base de dados após validar os dados recebidos. Armazena também a imagem associada, se houver. Redireciona para a página de listagem de tarefas com uma mensagem de sucesso.
      */
     public function store(StoreTaskRequest $request)
     {
@@ -81,7 +83,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Exibe os detalhes de uma tarefa específica.
      */
     public function show(Task $task)
     {
@@ -92,7 +94,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Exibe o formulário para editar uma tarefa existente, fornecendo também a lista de projetos e utilizadores disponíveis.
      */
     public function edit(Task $task)
     {
@@ -107,7 +109,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     *     Atualiza os dados de uma tarefa existente na base de dados após validar os dados recebidos. Atualiza também a imagem associada, se houver. Redireciona para a página de listagem de tarefas com uma mensagem de sucesso.
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
@@ -126,7 +128,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     *     Exclui uma tarefa do banco de dados. Redireciona para a página de listagem de tarefas com uma mensagem de sucesso indicando que a tarefa foi excluída com êxito.
      */
     public function destroy(Task $task)
     {
@@ -134,6 +136,10 @@ class TaskController extends Controller
 
         return to_route('task.index')->with('success', 'Task \'' . $task->name . '\' deleted successfully');
     }
+
+    /**
+    *     Lista as tarefas atribuídas ao utilizador autenticado, aplicando os mesmos filtros opcionais de nome e status. Retorna uma visualização com as tarefas paginadas, incluindo os parâmetros de consulta e mensagens de sucesso ou erro.
+    */
 
     public function myTasks()
     {

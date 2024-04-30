@@ -156,8 +156,4 @@ Resumindo, o método lida com a listagem de projetos, aplicando filtros se espec
         }
     }
 
-    public function getTasksCountPerProject(TasksPerProject $chart)
-    {
-        return inertia('/dashboard', ['chart' => $chart->build()]);
-    }
-}
+   }

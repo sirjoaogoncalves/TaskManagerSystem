@@ -7,10 +7,18 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserCrudResource;
 use App\Models\User;
 
+
+
+/**
+ *A classe UserController é responsável por gerir as operações relacionadas aos utilizadores dentro da aplicação. Ela atua como um controlador intermediário entre as requisições HTTP e o modelo User, permitindo listar, criar, exibir, editar e excluir utilizadores.
+ */
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Responsável por listar os utlizadores.
+     * Aplica filtros opcionais de nome e e-mail.
+     * Realiza paginação dos resultados, exibindo 10 utilizadores por página.
+     * Retorna uma visualização com os utilizadores paginados, incluindo os parâmetros de consulta e mensagens de sucesso ou erro.
      */
     public function index()
     {
@@ -39,7 +47,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Exibe o formulário para criar um novo utlizador.
      */
     public function create()
     {
@@ -47,7 +55,11 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Armazena um novo utlizador no banco de dados.
+     * Valida os dados recebidos conforme as regras definidas no StoreUserRequest.
+     * Define a data de verificação de e-mail como o tempo atual.
+     * Criptografa a senha antes de armazená-la na base de dados.
+     * Redireciona para a página de listagem de utlizadores com uma mensagem de sucesso indicando que o utlizador foi criado com êxito.
      */
     public function store(StoreUserRequest $request)
     {
@@ -61,7 +73,8 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Este método não contém implementação.
+     * Destaca que não haverá informações disponíveis sobre o utlizador.
      */
     public function show(User $user)
     {
@@ -69,7 +82,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Sxibe o formulário para editar um utilizador existente..
      */
     public function edit(User $user)
     {
@@ -79,7 +92,10 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza os dados de um utlizador existente na base de dados.
+     * Valida os dados recebidos conforme as regras definidas no UpdateUserRequest.
+     * Se uma nova senha for fornecida, ela é criptografada antes de ser atualizada.
+     * Redireciona para a página de listagem de utilizadores com uma mensagem de sucesso indicando que o utilizador foi atualizado com êxito.
      */
     public function update(UpdateUserRequest $request, User $user)
     {
@@ -97,7 +113,10 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Exclui um utilizador do base de dados.
+     * Verifica se o utilizador possui projetos associados.
+     * Se o utilizador tiver projetos, retorna um erro indicando que ele não pode ser excluído.
+     * Caso contrário, exclui o usuário e redireciona para a página de listagem de uutlizadores com uma mensagem de sucesso indicando que o utilizdor foi excluído com êxito.
      */
     public function destroy(User $user)
     {

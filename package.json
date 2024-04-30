@@ -21,7 +21,8 @@
     },
     "dependencies": {
         "@heroicons/react": "^2.1.3",
+        "apexcharts": "^3.49.0",
         "chart.js": "^3.9.1",
-        "react-chartjs-2": "^3.3.0"
+        "react-apexcharts": "^1.4.1"
     }
 }
