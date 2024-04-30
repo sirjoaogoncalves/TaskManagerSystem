@@ -14,7 +14,7 @@ export default function Show({ auth, task }) {
             <Head title={`Task: "${task.name}"`} />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
                         <div>
                             <img
                                 src={task.img_path}
@@ -22,7 +22,7 @@ export default function Show({ auth, task }) {
                                 className='w-full h-64 object-cover'
                             />
                         </div>
-                        <div className="p-6 text-black dark:text-black">
+                        <div className="p-6 text-black dark:text-white bg-white dark:bg-gray-800">
 
                             <div className="grid grid-cols-2 gap-1 mt-2">
                                 <div>

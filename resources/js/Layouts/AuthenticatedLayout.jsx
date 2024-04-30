@@ -7,8 +7,7 @@ import { Link } from '@inertiajs/react';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(true); // Start with dark mode
 
     useEffect(() => {
         if (isDarkMode) {
@@ -23,65 +22,98 @@ export default function Authenticated({ user, header, children }) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+        <div className={`min-h-screen ${isDarkMode ? 'dark' : ''}`}>
+
+            <nav className="bg-gray-900 shadow-md">
+
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16">
-                        <div className="flex">
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    Dashboard
-                                </NavLink>
-                                <NavLink href={route('project.index')} active={route().current('project.index')}>
-                                    Projects
-                                </NavLink>
-                                <NavLink href={route('task.myTasks')} active={route().current('task.myTasks')}>
-                                    My Tasks
-                                </NavLink>
-                                <NavLink href={route('task.index')} active={route().current('task.index')}>
-                                    All Tasks
-                                </NavLink>
-                                <NavLink href={route('user.index')} active={route().current('user.index')}>
-                                    Users
-                                </NavLink>
+                    <div className="flex justify-between items-center h-16">
+                        <div className="flex items-center">
+                            <Link href="/">
+                                <ApplicationLogo className="h-16 w-16" />
+                            </Link>
+                            <div className="hidden sm:block sm:ml-10">
+                                <div className="flex space-x-4">
+                                    <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                        Dashboard
+                                    </NavLink>
+                                    <NavLink href={route('project.index')} active={route().current('project.index')}>
+                                        Projects
+                                    </NavLink>
+                                    <NavLink href={route('task.myTasks')} active={route().current('task.myTasks')}>
+                                        My Tasks
+                                    </NavLink>
+                                    <NavLink href={route('task.index')} active={route().current('task.index')}>
+                                        All Tasks
+                                    </NavLink>
+                                    <NavLink href={route('user.index')} active={route().current('user.index')}>
+                                        Users
+                                    </NavLink>
+                                </div>
                             </div>
                         </div>
-
-                        <div className="shrink-0 flex items-center">
-                            <Link href="/">
-                                <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                            </Link>
-                        </div>
-
-
-
-                        <div className="hidden sm:flex sm:items-center sm:ms-6">
-                            <div className="ms-3 relative">
+                        <div className="flex items-center">
+                            <button
+                                className="rounded-md p-2 text-gray-400 hover:text-white focus:outline-none focus:text-white"
+                                onClick={toggleDarkMode}
+                            >
+                                {isDarkMode ? (
+                                    <svg
+                                        className="h-6 w-6"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M13 7l5 5m0 0l-5 5m5-5H6"
+                                        />
+                                    </svg>
+                                ) : (
+                                    <svg
+                                        className="h-6 w-6"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M11.993 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9z"
+                                        />
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M15.999 9a6 6 0 01-5.365 5.977A4.001 4.001 0 0016 11c0-2.206-1.794-4-4-4 0-.553-.447-1-1-1a6 6 0 014.999 8.942A6.002 6.002 0 0116 15c1.105 0 2-.894 2-2 0-.553-.447-1-1-1z"
+                                        />
+                                    </svg>
+                                )}
+                            </button>
+                            <div className="ml-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                        <span className="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
+                                        <button className="flex items-center text-sm font-medium text-white">
+                                            <span>{user.name}</span>
+                                            <svg
+                                                className="ml-1 h-5 w-5"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
                                             >
-                                                {user.name}
-
-                                                <svg
-                                                    className="ms-2 -me-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+                                        </button>
                                     </Dropdown.Trigger>
-
                                     <Dropdown.Content>
                                         <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
@@ -91,63 +123,64 @@ export default function Authenticated({ user, header, children }) {
                                 </Dropdown>
                             </div>
                         </div>
-
-                        <div className="-me-2 flex items-center sm:hidden">
+                        <div className="-mr-2 flex sm:hidden">
                             <button
-                                onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
-                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+                                onClick={() => setShowingNavigationDropdown(prevState => !prevState)}
+                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white focus:outline-none focus:text-white"
                             >
-                                <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path
-                                        className={!showingNavigationDropdown ? 'inline-flex' : 'hidden'}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={showingNavigationDropdown ? 'inline-flex' : 'hidden'}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
+                                {showingNavigationDropdown ? (
+                                    <svg
+                                        className="h-6 w-6"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                ) : (
+                                    <svg
+                                        className="h-6 w-6"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                                    </svg>
+                                )}
                             </button>
                         </div>
                     </div>
                 </div>
-
-                <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                    <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-                        <div className="px-4">
-                            <div className="font-medium text-base text-gray-800 dark:text-gray-200">{user.name}</div>
-                            <div className="font-medium text-sm text-gray-500">{user.email}</div>
-                        </div>
-
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                Log Out
+                {showingNavigationDropdown && (
+                    <div className="sm:hidden bg-gray-900">
+                        <div className="px-2 pt-2 pb-3 space-y-1">
+                            <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                Dashboard
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('project.index')} active={route().current('project.index')}>
+                                Projects
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('task.myTasks')} active={route().current('task.myTasks')}>
+                                My Tasks
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('task.index')} active={route().current('task.index')}>
+                                All Tasks
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('user.index')} active={route().current('user.index')}>
+                                Users
                             </ResponsiveNavLink>
                         </div>
                     </div>
-                </div>
+                )}
             </nav>
-
             {header && (
-                <header className="bg-white dark:bg-gray-800 shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
+                <header className="bg-gray-900 py-6">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{header}</div>
                 </header>
             )}
-
-            <main>{children}</main>
+            <main className="bg-gray-800 h-full h-screen">{children}</main>
         </div>
     );
 }

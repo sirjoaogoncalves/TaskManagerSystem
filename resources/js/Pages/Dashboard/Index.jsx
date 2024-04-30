@@ -71,7 +71,7 @@ export default function Dashboard({ auth, projects, tasks, users }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
+
         >
             <Head title="Dashboard" />
 
@@ -191,7 +191,7 @@ export default function Dashboard({ auth, projects, tasks, users }) {
 
 
                      <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
-                            <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Tasks per User</h2>
+                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Tasks per User</h2>
                             <Chart
                                 type="bar"
                                 width={500}
@@ -237,4 +237,3 @@ export default function Dashboard({ auth, projects, tasks, users }) {
         </AuthenticatedLayout>
     );
 }
-

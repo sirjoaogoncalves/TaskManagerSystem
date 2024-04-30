@@ -26,7 +26,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
         if (e.key === 'Enter') return;
         searchFieldChanged(name, e.target.value);
     }
-    // Esta função é invocada quando há uma mudança na ordenação. Inverte a direção da ordenação se o campo de ordenação permanecer o mesmo ou define um novo campo de ordenação com direção ascendente. Em seguida, realiza uma nova requisição GET para atualizar a lista de projetos.
+// Esta função é invocada quando há uma mudança na ordenação. Inverte a direção da ordenação se o campo de ordenação permanecer o mesmo ou define um novo campo de ordenação com direção ascendente. Em seguida, realiza uma nova requisição GET para atualizar a lista de projetos.
     const sortChanged = (name) => {
         if (name === queryParams.sort_field) {
             if (queryParams.sort_direction === 'asc') {
@@ -40,9 +40,9 @@ export default function Index({ auth, projects, queryParams = null, success }) {
         }
         router.get(route('project.index'), queryParams, { replace: true, preserveState: true });
     }
-    // Esta função é invocada para excluir um projeto. Exibe um prompt de confirmação e, se confirmado, realiza uma requisição DELETE para excluir o projeto.
+// Esta função é invocada para excluir um projeto. Exibe um prompt de confirmação e, se confirmado, realiza uma requisição DELETE para excluir o projeto.
     const deleteProject = (project) => {
-        if (!window.confirm('Are you sure you want to delete this project?')) return;
+        if(!window.confirm('Are you sure you want to delete this project?')) return;
         router.delete(route('project.destroy', project.id));
     }
 
@@ -50,8 +50,8 @@ export default function Index({ auth, projects, queryParams = null, success }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Projects</h2>
+                <div className="flex items-center justify-center">
+
                     <Link href={route('project.create')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Project</Link>
                 </div>
             }
@@ -60,7 +60,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
             <Head title="Projects" />
 
 
-            <div className="py-12">
+            <div className="py-12 h-screen">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         {success && (<div className="bg-emerald-500 text-white p-4 mb-4 text-center overflow-hidden shadow-sm sm:rounded-lg">
@@ -176,7 +176,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                                                 </td>
                                                 <td className="px-6 py-4 text-nowrap">
                                                     <Link href={route('project.edit', project.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">Edit</Link>
-                                                    <button onClick={(e) => deleteProject(project)} className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1">Delete</button>
+                                                    <button  onClick={(e) => deleteProject(project)} className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1">Delete</button>
                                                 </td>
                                             </tr>
                                         ))}
