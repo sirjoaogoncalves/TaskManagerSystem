@@ -48,7 +48,7 @@ export default function Index({ auth, users, queryParams = null, success, error 
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <div className="flex items-center justify-center ">
+                <div className="flex items-center justify-center">
                     <Link href={route('user.create')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add User</Link>
                 </div>
             }
@@ -57,10 +57,10 @@ export default function Index({ auth, users, queryParams = null, success, error 
             <Head title="Users" />
 
 
-            <div className="py-12 h-screen">
+            <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        {success && (
+                       {success && (
                             <div className="bg-emerald-500 text-white p-4 mb-4 text-center overflow-hidden shadow-sm sm:rounded-lg">
                                 {success}
                             </div>
@@ -112,8 +112,8 @@ export default function Index({ auth, users, queryParams = null, success, error 
                                             </TableHeading>
 
 
-                                            <th className="px-3 py-3 text-right"></th>
-                                            <th className="px-3 py-3 text-right">Actions</th>
+                                            <th className="px-3 py-3"></th>
+                                            <th className="px-3 py-3">Actions</th>
                                         </tr>
                                     </thead>
 
@@ -153,6 +153,9 @@ export default function Index({ auth, users, queryParams = null, success, error 
                                                 <td className="px-6 py-4">
                                                     {user.created_at}
                                                 </td>
+                                                <td className="px-6 py-4 text-nowrap">
+                                                </td>
+
                                                 <td className="px-6 py-4 text-nowrap">
                                                     <Link href={route('user.edit', user.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">Edit</Link>
                                                     <button onClick={(e) => deleteUser(user)} className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1">Delete</button>

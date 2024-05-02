@@ -20,6 +20,7 @@ class User extends Authenticatable {
         'name',
         'email',
         'password',
+        'team',
         'email_verified_at',
     ];
 
@@ -45,6 +46,10 @@ class User extends Authenticatable {
 
     public function hasProjects() {
         return $this->hasMany(Project::class, 'created_by')->orWhere('updated_by', $this->id)->exists();
+    }
+
+    public function teams() {
+        return $this->hasMany(Team::class, 'team_id');
     }
 
 

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\TasksPerProject;
+
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Project;
-use ArielMejiaDev\LarapexCharts\PieChart;
-use Illuminate\Support\Facades\DB;
+
 
 /**
  * Classe Responsavel por metodos referentes a projetos
@@ -17,7 +16,7 @@ use Illuminate\Support\Facades\DB;
  * Realiza a listagem dos projetos, filtrando por nome e status
  * Paginacao dos projetos
  * Criacao, atualizacao e remocao dos projetos
-*/
+ */
 class ProjectController extends Controller
 {
     /**
@@ -62,7 +61,7 @@ Resumindo, o método lida com a listagem de projetos, aplicando filtros se espec
      */
     public function create()
     {
-       return inertia('Project/Create');
+        return inertia('Project/Create');
     }
 
     /**
@@ -110,7 +109,7 @@ Resumindo, o método lida com a listagem de projetos, aplicando filtros se espec
             'project' => new ProjectResource($project),
             'tasks' => TaskResource::collection($tasks),
             'queryParams' => request()->query() ?: null,
-            ]);
+        ]);
     }
 
     /**
@@ -147,13 +146,11 @@ Resumindo, o método lida com a listagem de projetos, aplicando filtros se espec
      */
     public function destroy(Project $project)
     {
-       if ($project->hasTasks()) {
+        if ($project->hasTasks()) {
             return to_route('project.index')->with('error', 'Project \'' . $project->name . '\' cannot be deleted because it has tasks');
-        }
-        else {
+        } else {
             $project->delete();
             return to_route('project.index')->with('success', 'Project \'' . $project->name . '\' deleted successfully');
         }
     }
-
-   }
+}

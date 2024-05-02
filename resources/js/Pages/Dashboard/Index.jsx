@@ -68,16 +68,34 @@ export default function Dashboard({ auth, projects, tasks, users }) {
     const creationData = sortedDates.map(date => projectCreationCounts[date] || 0);
     const dueData = sortedDates.map(date => projectDueCounts[date] || 0);
 
+
     return (
         <AuthenticatedLayout
             user={auth.user}
-
         >
             <Head title="Dashboard" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    {/* Boxes for project, task, and user counts */}
+                    <div className="grid grid-cols-3 gap-6 mb-6">
+                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4 flex flex-col items-center justify-center">
+                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Projects</h2>
+                            <p className="text-3xl font-bold text-gray-800 dark:text-gray-200">{projects.data.length}</p>
+                        </div>
+                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4 flex flex-col items-center justify-center">
+                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Tasks</h2>
+                            <p className="text-3xl font-bold text-gray-800 dark:text-gray-200">{tasks.data.length}</p>
+                        </div>
+                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4 flex flex-col items-center justify-center">
+                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Users</h2>
+                            <p className="text-3xl font-bold text-gray-800 dark:text-gray-200">{users.data.length}</p>
+                        </div>
+                    </div>
+
+                    {/* Charts */}
                     <div className="grid grid-cols-2 gap-6">
+                        {/* Task per Project */}
                         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
                             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Tasks per Project</h2>
                             <Chart
@@ -113,13 +131,20 @@ export default function Dashboard({ auth, projects, tasks, users }) {
                                         show: true,
                                         position: 'bottom',
                                         labels: {
-                                            colors: '#ffffff', // Light legend text color
+                                            colors: '#fff',
+                                        },
+                                        horizontalAlign: 'center',
+                                    },
+                                    plotOptions: {
+                                        bar : {
+                                            endingShape: 'rounded',
                                         },
                                     },
                                 }}
                             />
                         </div>
-                          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
+                        {/* Tasks Status per Project */}
+                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
                             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Tasks Status per Project</h2>
                             <Chart
                                 type="bar"
@@ -147,50 +172,55 @@ export default function Dashboard({ auth, projects, tasks, users }) {
                                                 return statusLabels[value]; // Custom label
                                             },
                                         },
+                                        horizontalAlign: 'center',
                                     },
                                 }}
                             />
                         </div>
+                        {/* Project Timeline */}
                         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
-                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Project Timeline</h2>
-                        <Chart
-                            type="line"
-                            width={700}
-                            height={400}
-                            series={[
-                                {
-                                    name: 'Projects Created',
-                                    data: creationData,
-                                },
-                                {
-                                    name: 'Projects Due',
-                                    data: dueData,
-                                },
-                            ]}
-                            options={{
-                                colors: ['#007bff', '#28a745'], // Blue, Green
-                                xaxis: {
-                                    categories: sortedDates,
-                                },
-                                dataLabels: {
-                                    enabled: true,
-                                    style: {
-                                        colors: ['#ffffff'], // Light text color for data labels
+                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Project Timeline</h2>
+                            <Chart
+                                type="line"
+                                width={700}
+                                height={400}
+                                series={[
+                                    {
+                                        name: 'Projects Created',
+                                        data: creationData,
                                     },
-                                },
-                                legend: {
-                                    show: true,
-                                    position: 'bottom',
-                                    labels: {
-                                        colors: '#ffffff', // Light legend text color
+                                    {
+                                        name: 'Projects Due',
+                                        data: dueData,
                                     },
-                                },
-                            }}
-                        />
-                    </div>
-
-
-                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
+                                ]}
+                                options={{
+                                    colors: ['#007bff', '#28a745'], // Blue, Green
+                                    xaxis: {
+                                        categories: sortedDates,
+                                    },
+                                    dataLabels: {
+                                        enabled: true,
+                                        style: {
+                                            colors: ['#ffffff'], // Light text color for data labels
+                                        },
+                                    },
+                                    stroke: {
+                                        curve: 'smooth',
+                                    },
+                                    legend: {
+                                        show: true,
+                                        position: 'bottom',
+                                        labels: {
+                                            colors: '#ffffff', // Light legend text color
+                                        },
+                                        horizontalAlign : 'center',
+                                    },
+                                }}
+                            />
+                        </div>
+                        {/* Tasks per User */}
+                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
                             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Tasks per User</h2>
                             <Chart
                                 type="bar"
@@ -227,12 +257,13 @@ export default function Dashboard({ auth, projects, tasks, users }) {
                                         labels: {
                                             colors: '#ffffff', // Light legend text color
                                         },
+                                        horizontalAlign: 'center',
                                     },
                                 }}
                             />
                         </div>
+                    </div>
                 </div>
-            </div>
             </div>
         </AuthenticatedLayout>
     );

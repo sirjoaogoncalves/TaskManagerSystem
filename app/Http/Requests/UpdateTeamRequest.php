@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class StoreUserRequest extends FormRequest
+class UpdateTeamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,16 +21,11 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
-       return [
-            "name" => ["required", "string", "max:255"],
-            "email" => ["required", "string", "email", "unique:users,email"],
-            "password" => [
-                "required",
-                'confirmed',
-                Password::min(8)->letters()->symbols(),
-            ],
-            'team_id' => ['nullable', 'exists:teams,id'],
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'image' => ['nullable', 'image'],
+            'description' => ['required', 'string', 'max:255'],
+            'user_id' => ['required', 'exists:users,id'],
         ];
     }
-
 }

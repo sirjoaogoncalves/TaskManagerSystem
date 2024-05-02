@@ -24,6 +24,7 @@ class UserController extends Controller
     {
         $query = User::query();
 
+
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
 
