@@ -5,8 +5,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PROJECT_STATUS_COLOR_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constants.jsx";
 import { Head, Link, router } from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
+import * as XLSX from 'xlsx';
 
-export default function Index({ auth, projects, queryParams = null, success }) {
+
+export default function Index({ auth, projects, queryParams = null, success, }) {
 
     queryParams = queryParams || {};
 
@@ -46,7 +48,33 @@ export default function Index({ auth, projects, queryParams = null, success }) {
         router.delete(route('project.destroy', project.id));
     }
 
+    const exportToExcel = () => {
+        const data = projects.data.map(project => {
+            return [
+                project.id,
+                project.name,
+                PROJECT_STATUS_TEXT_MAP[project.status],
+                project.created_at,
+                project.due_date,
+                project.created_by.name,
+            ];
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet([
+            ['ID', 'Name', 'Status', 'Create Date', 'Due Date', 'Created By'],
+            ...data
+        ]);
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Projects');
+
+        XLSX.writeFile(wb, 'projects.xlsx');
+    }
+
+
+
     return (
+
         <AuthenticatedLayout
             user={auth.user}
             header={
@@ -55,8 +83,12 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
-
                     </Link>
+                    <button onClick={exportToExcel} className="bg-green-500 hover:bg-green-700 flex text-white font-bold py-2 px-4 rounded ml-2">Export to Excel
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                    </button>
                 </div>
             }
         >
