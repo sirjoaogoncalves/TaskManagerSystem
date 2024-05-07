@@ -35,9 +35,9 @@ class UserController extends Controller
             $query->where("email", "like", "%" . request("email") . "%");
         }
 
-        $users = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
-            ->onEachSide(1);
+        $users = User::with('team')->orderBy($sortField, $sortDirection)
+    ->paginate(10)
+    ->onEachSide(1);
 
         return inertia("User/Index", [
             "users" => UserCrudResource::collection($users),

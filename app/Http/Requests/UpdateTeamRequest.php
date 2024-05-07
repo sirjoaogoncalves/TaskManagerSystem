@@ -22,10 +22,9 @@ class UpdateTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'image' => ['nullable', 'image'],
+           'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
-            'user_id' => ['required', 'exists:users,id'],
+            'user_id' => ['required', 'array', 'exists:users,id']
         ];
     }
 }

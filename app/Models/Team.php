@@ -12,12 +12,11 @@ class Team extends Model
     protected $fillable = [
         'name',
         'description',
-        'img_path',
         'user_id',
     ];
 
-    public function member()
+    public function users()
     {
-        return $this->belongsTo(User::class, 'team_id');
+        return $this->hasMany(User::class);
     }
 }

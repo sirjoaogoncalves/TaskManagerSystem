@@ -21,8 +21,7 @@ class TeamResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'img_path' => $this->img_path,
-            'user_id' => $this->member ? new UserResource($this->member) : null,
+            'user_id' => new UserResource($this->userID),
         ];
     }
 }

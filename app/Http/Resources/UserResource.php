@@ -21,7 +21,6 @@ class UserResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "email" => $this->email,
-            "team_id" => $this->team ? new TeamResource($this->team) : null,
         ];
     }
 }

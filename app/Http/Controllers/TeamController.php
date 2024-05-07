@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
 use App\Models\Team;
+use App\Models\User;
 use App\Http\Resources\TeamResource;
-
+use App\Http\Resources\UserResource;
+use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
@@ -17,7 +19,7 @@ class TeamController extends Controller
     {
         $teams = Team::all();
 
-        return inertia('Teams/Index', [
+        return inertia('Team/Index', [
             'teams' => TeamResource::collection($teams),
         ]);
     }
@@ -27,15 +29,32 @@ class TeamController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+
+        return inertia('Team/Create', [
+            'users' => UserResource::collection($users),
+                    ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTeamRequest $request)
+    public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        $team = Team::create($data);
+
+        // Sync users with the team
+        if ($request->has('users')) {
+            $team->users()->sync($request->input('users'));
+        }
+
+        return redirect()->route('team.index')
+            ->with('success', "Team \"$team->name\" was created");
     }
 
     /**
@@ -43,7 +62,9 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        //
+        return inertia('Team/Show', [
+            'team' => new TeamResource($team),
+        ]);
     }
 
     /**
@@ -51,7 +72,12 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        //
+        $users = User::all();
+
+        return inertia('Team/Edit', [
+            'team' => new TeamResource($team),
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -59,7 +85,19 @@ class TeamController extends Controller
      */
     public function update(UpdateTeamRequest $request, Team $team)
     {
-        //
+        $data = $request->validated();
+        $team->update($data);
+
+        // Sync users with the team
+        if ($request->has('users')) {
+            $team->users()->sync($request->input('users'));
+        } else {
+            // If no users provided, detach all users from the team
+            $team->users()->detach();
+        }
+
+        return redirect()->route('team.index')
+            ->with('success', "Team \"$team->name\" was updated");
     }
 
     /**
@@ -67,6 +105,8 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
-        //
+        $team->delete();
+        return redirect()->route('team.index')
+            ->with('success', "Team \"$team->name\" was deleted");
     }
 }

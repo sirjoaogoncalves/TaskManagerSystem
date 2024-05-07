@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description')->nullable();
-            $table->string('img_path')->nullable();
-            $table->foreignId('assigned_user_id')->constrained('users');
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->constrained('users')->nullable();
             $table->timestamps();
         });
     }
