@@ -1,0 +1,26 @@
+# Use the official PHP image as a base
+FROM php:apache
+
+# Set the working directory in the container
+WORKDIR /app/backend
+
+# Install PHP extensions and dependencies
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Copy the Laravel application code to the container
+COPY . .
+
+# Install Laravel dependencies
+RUN composer install --no-interaction --ignore-platform-req=ext-zip
+
+# Generate Laravel application key
+RUN php artisan key:generate
+
+# Expose port 8000 to the outside world
+EXPOSE 8000
+
+# Command to start Laravel using artisan serve
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

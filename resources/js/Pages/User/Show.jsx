@@ -1,6 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import { USER_STATUS_TEXT_MAP, PROJECT_STATUS_COLOR_MAP } from '@/constants';
 import TasksTable from '../Task/TasksTable';
 
 
