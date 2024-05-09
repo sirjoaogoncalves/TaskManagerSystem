@@ -10,7 +10,7 @@ export default function SecondaryButton({ type = 'button', className = '', disab
             }
             disabled={disabled}
         >
-            {children}
+               {children}
         </button>
-    );
+    )
 }

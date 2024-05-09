@@ -25,14 +25,14 @@ export default function Authenticated({ user, header, children }) {
 
             {/* Vertical Navbar */}
             <nav className="bg-gray-900 w-40 flex flex-col justify-between items-center transition-all duration-300 ease-in-out hover:w-72">
-                <div className="mt-8">
-                    <Link href="/">
-                        <ApplicationLogo className="h-12 w-12 flex justify-center items-center" />
+                <div className="mt-6">
+                    <Link href="/" className="flex justify-center ">
+                        <ApplicationLogo className="h-16 w-16" />
                     </Link>
 
-                    <div className="mt-6">
-                        <Dropdown>
-                            <Dropdown.Trigger>
+                    <div className="mt-6 flex justify-center items-center">
+                        <Dropdown className="flex justify-center items-center">
+                            <Dropdown.Trigger className="mt-6 flex justify-center items-center">
                                 <button className="flex items-center justify-center text-sm font-medium text-white">
                                     {user.name}
                                     <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -41,28 +41,28 @@ export default function Authenticated({ user, header, children }) {
                                 </button>
                             </Dropdown.Trigger>
                             <Dropdown.Content>
-                                <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
-                                <Dropdown.Link href={route('logout')} method="post" as="button">
+                                <Dropdown.Link className="flex justify-center items-center text-center" href={route('profile.edit')}>Profile</Dropdown.Link>
+                                <Dropdown.Link className="flex justify-center items-center text-center" href={route('logout')} method="post" as="button">
                                     Log Out
                                 </Dropdown.Link>
                             </Dropdown.Content>
                         </Dropdown>
                     </div>
-                        <div className="mt-3 flex flex-col space-y-4">
+                    <div className="mt-36 flex flex-col space-y-4">
                         <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            Dashboard
+                            <span className='mr-1'>Dashboard</span>
                         </NavLink>
                         <NavLink href={route('project.index')} active={route().current('project.index')}>
-                            Projects
+                            <span className='mr-1'>Projects</span>
                         </NavLink>
                         <NavLink href={route('task.myTasks')} active={route().current('task.myTasks')}>
-                            My Tasks
+                            <span className='mr-1'>My Tasks</span>
                         </NavLink>
                         <NavLink href={route('task.index')} active={route().current('task.index')}>
-                            All Tasks
+                            <span className='mr-1'>All Tasks</span>
                         </NavLink>
                         <NavLink href={route('user.index')} active={route().current('user.index')}>
-                            Users
+                            <span className='mr-1'>Users</span>
                         </NavLink>
                     </div>
                 </div>

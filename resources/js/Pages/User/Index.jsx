@@ -3,6 +3,7 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
+import * as XLSX from 'xlsx';
 
 export default function Index({ auth, users, queryParams = null, success, error }) {
 
@@ -44,6 +45,28 @@ export default function Index({ auth, users, queryParams = null, success, error 
         router.delete(route('user.destroy', user.id));
     }
 
+    const exportToExcel = () => {
+        const data = users.data.map(user => {
+            return [
+                user.id,
+                user.name,
+                user.email,
+                user.created_at,
+            ];
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet([
+            ['ID', 'Name', 'Email', 'Created At'],
+            ...data
+        ]);
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Users');
+
+        XLSX.writeFile(wb, 'users.xlsx');
+    }
+
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -54,6 +77,12 @@ export default function Index({ auth, users, queryParams = null, success, error 
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
                     </Link>
+                    <button onClick={exportToExcel} className="bg-green-500 flex hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2">
+                        <span className="mr-1">Export to Excel</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="white" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" >
+                            <path d="M0 64C0 28.7 28.7 0 64 0H224V128c0 17.7 14.3 32 32 32H384V288H216c-13.3 0-24 10.7-24 24s10.7 24 24 24H384V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM384 336V288H494.1l-39-39c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l80 80c9.4 9.4 9.4 24.6 0 33.9l-80 80c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l39-39H384zm0-208H256V0L384 128z" />
+                        </svg>
+                    </button>
                 </div>
             }
         >
